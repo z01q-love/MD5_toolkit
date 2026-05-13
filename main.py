@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
 from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Random import get_random_bytes
 
@@ -22,16 +23,17 @@ class AESEngine:
 
     @staticmethod
     def _derive_key(password: str, salt: bytes) -> bytes:
-        return PBKDF2(password, salt, dkLen=32, count=100_000, hmac_hash_module=hashlib.sha256)
+        return PBKDF2(password, salt, dkLen=32, count=100_000, hmac_hash_module=SHA256)
 
     @staticmethod
     def encrypt_text(plaintext: str, password: str) -> str:
         """加密文本，返回 Base64 编码的密文"""
         salt = get_random_bytes(16)
         key = AESEngine._derive_key(password, salt)
-        cipher = AES.new(key, AES.MODE_GCM)
+        nonce = get_random_bytes(AESEngine.NONCE_SIZE)
+        cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         ciphertext, tag = cipher.encrypt_and_digest(plaintext.encode('utf-8'))
-        combined = salt + cipher.nonce + tag + ciphertext
+        combined = salt + nonce + tag + ciphertext
         return base64.b64encode(combined).decode('ascii')
 
     @staticmethod
@@ -52,12 +54,13 @@ class AESEngine:
         """加密文件，返回 (输出路径, MD5值)"""
         salt = get_random_bytes(16)
         key = AESEngine._derive_key(password, salt)
-        cipher = AES.new(key, AES.MODE_GCM)
+        nonce = get_random_bytes(AESEngine.NONCE_SIZE)
+        cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
 
         outpath = filepath + '.enc'
         with open(filepath, 'rb') as fin, open(outpath, 'wb') as fout:
             fout.write(salt)
-            fout.write(cipher.nonce)
+            fout.write(nonce)
             data = fin.read()
             ciphertext, tag = cipher.encrypt_and_digest(data)
             fout.write(tag)
