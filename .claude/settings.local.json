@@ -3,7 +3,26 @@
     "allow": [
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(pip install *)",
+      "Bash(python3 *)",
+      "Bash(where python *)",
+      "Bash(where python3 *)",
+      "Read(//c/Program Files/**)",
+      "Bash(/c/Users/25469/AppData/Local/Programs/Python/Python312/python.exe *)",
+      "Bash(python test_tool.py)",
+      "Bash(python -c \"import sys; print\\(sys.executable\\); from Crypto.Cipher import AES; print\\('Crypto OK'\\)\")",
+      "Read(//c/Users/25469/**)",
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(py --version)",
+      "Bash(pip show *)",
+      "Bash(python *)",
+      "Bash(cmd.exe /c \"where python\")",
+      "Bash(C:/Users/25469/AppData/Local/Programs/Python/Python312/python *)",
+      "Bash(export PYTHON=\"C:/Users/25469/AppData/Local/Programs/Python/Python312/python\")",
+      "Bash(export DIST=\"D:/桌面/Deepseekv4pro-项目集合/项目4-MD5加密解密工具/dist\")",
+      "Bash(timeout 5 D:/桌面/Deepseekv4pro-项目集合/项目4-MD5加密解密工具/dist/MD5-AES加密解密工具.exe)",
+      "Bash(echo \"Exit code: $?\")"
     ]
   }
 }
